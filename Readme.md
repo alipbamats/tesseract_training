@@ -2,21 +2,21 @@
 
 	combine_tessdata -u ~/tesseract_training/tessdata-main/tessdata-main/rus.traineddata ./rus_original/
 
-# Создание box файла из изображения
+## Создание box файла из изображения
 
 	 tesseract 8.png  8 -l rus --tessdata-dir /usr/share/tesseract-ocr/4.00/tessdata/ makebox
 
 	 for i in *.png; do tesseract $i  ${i%.*} -l rus --tessdata-dir /usr/share/tesseract-ocr/4.00/tessdata/ makebox; done
  
-# Создать исходный .lstm файл
+## Создать исходный .lstm файл
 
 	combine_tessdata -e /usr/share/tesseract-ocr/4.00/tessdata/rus.traineddata ./rus.lstm
 
-# Создать справочник символов из .box файлов
+## Создать справочник символов из .box файлов
 
 	$ unicharset_extractor  --output_unicharset train/avar.unicharset  --norm_mode 2 some_folder/*.box
 
-# Создание начальной модели
+## Создание начальной модели
 
 	combine_lang_model \
 			--input_unicharset avar.unicharset \
@@ -26,7 +26,7 @@
 	  	--puncs langdata_lstm/avar/avar.punc  \
 	  	--output_dir avar_trained/ --lang avar
 
-# Непосредственно обучение модели из полученных данных
+## Непосредственно обучение модели из полученных данных
 	lstmtraining \
 	  	--model_output out/ \
 	  	--continue_from rus.lstm \
@@ -37,12 +37,12 @@
 	  	--U avar.unicharset \
 	  	--max_iterations 500
 
-# Сборка результатов
+## Сборка результатов
 
 	 lstmtraining \
 		--stop_training \
   		--continue_from out/probability.checkpoint \
 	  	--traineddata avar_trained/avar/avar.traineddata \
 	  	--model_output out/avar.traineddata
-# Каждое слово в верхний регистр
+## Каждое слово в верхний регистр
 	 cat wordlist_lower.txt | sed -r "s/([а-я]{1})(.*)/\u\1\2/g" > wordlist_cap.txt
