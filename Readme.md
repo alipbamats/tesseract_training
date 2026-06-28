@@ -1,3 +1,6 @@
+## Создание lstmf файла
+
+	tesseract <image>.png <box_name> --psm 6 lstm.train
 
 ## Извлечение файлов из оригинальной модели
 
