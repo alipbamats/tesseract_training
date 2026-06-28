@@ -1,3 +1,13 @@
 ######train_folder/out/
 .venv/
 .idea/
+sources/*/*.lstmf
+sources/*/*/*.lstmf
+train/out/*
+train/rus_original/*
+train/avar.eval_files.txt
+train/avar_trained/*/*
+train/avar_trained/*
+train/avar.train_files.txt
+train/box/
+train/avar.unicharset
