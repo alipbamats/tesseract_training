@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import shutil
 import hashlib
-
+import re
 
 def clear_work_space(files: list):
     for file in files:
@@ -133,6 +133,34 @@ def train_model(sources: Path,
     process = subprocess.Popen(" ".join(shell_command), shell=True)
     process.wait()
 
+def build_trained_model(continue_from: Path, trained_data: Path, model_output: Path, language: str):
+    float_value=100.0
+    pob_min_checkpoint=""
+    for file in os.listdir(continue_from):
+        match=re.search("(\d+\.\d+_\d+)\.checkpoint",file)
+        if match:
+            float_num=match.group(1).replace("_","")
+            if float(float_num)<float_value:
+                float_value=float(float_num)
+                pob_min_checkpoint=file
+
+    '''
+    lstmtraining \
+		--stop_training \
+  		--continue_from out/probability.checkpoint \
+	  	--traineddata avar_trained/avar/avar.traineddata \
+	  	--model_output out/avar.traineddata
+	  	
+    '''
+    shell_command = ['lstmtraining',
+                     "--stop_training",
+                     "--continue_from", str(continue_from/pob_min_checkpoint),
+                     "--traineddata", str(trained_data),
+                     "--model_output", str(model_output/"{}.traineddata".format(language)),]
+    print(" ".join(shell_command))
+    process = subprocess.Popen(" ".join(shell_command), shell=True)
+    process.wait()
+
 lang="avar"
 train_dir=Path(".")/"train"
 box_files_dir = Path(".") / train_dir / "box"
@@ -155,19 +183,23 @@ lstmf_files=get_files_by_extension(path=sources, extension=".lstmf")
 for folder, files in lstmf_files.items():
     work_space_files.extend([str(Path(folder)/file) for file in files])
 
-clear_work_space(files=work_space_files)
-create_unicharset(sources=sources, box_files_dir=box_files_dir)
-create_lstmf_files(sources=sources)
-create_combine_lang_model(unicharset_file=unicharset_file,
-                          language_data=language_data,
-                          out=pre_trained,
-                          language=lang)
-train_model(sources=sources,
-            out=train_out_dir,
-            init_lstm=train_dir/"rus.lstm",
-            old_traineddata=train_dir/"testdata_best"/"rus.traineddata",
-            traineddata=pre_trained/lang/"{}.traineddata".format(lang),
-            unicharset_file=unicharset_file,
-            train_files_list=train_files_list_file,
-            eval_files_list=eval_files_list_file)
+#clear_work_space(files=work_space_files)
+# create_unicharset(sources=sources, box_files_dir=box_files_dir)
+# create_lstmf_files(sources=sources)
+# create_combine_lang_model(unicharset_file=unicharset_file,
+#                           language_data=language_data,
+#                           out=pre_trained,
+#                           language=lang)
+# train_model(sources=sources,
+#             out=train_out_dir,
+#             init_lstm=train_dir/"rus.lstm",
+#             old_traineddata=train_dir/"testdata_best"/"rus.traineddata",
+#             traineddata=pre_trained/lang/"{}.traineddata".format(lang),
+#             unicharset_file=unicharset_file,
+#             train_files_list=train_files_list_file,
+#             eval_files_list=eval_files_list_file)
 
+build_trained_model(continue_from=train_out_dir,
+                    trained_data=pre_trained/lang/"{}.traineddata".format(lang),
+                    model_output=train_out_dir,
+                    language=lang)
