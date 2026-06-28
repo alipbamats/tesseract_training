@@ -1,1 +1,3 @@
 ######train_folder/out/
+.venv/
+.idea/
