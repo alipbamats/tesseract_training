@@ -183,21 +183,21 @@ lstmf_files=get_files_by_extension(path=sources, extension=".lstmf")
 for folder, files in lstmf_files.items():
     work_space_files.extend([str(Path(folder)/file) for file in files])
 
-#clear_work_space(files=work_space_files)
-# create_unicharset(sources=sources, box_files_dir=box_files_dir)
-# create_lstmf_files(sources=sources)
-# create_combine_lang_model(unicharset_file=unicharset_file,
-#                           language_data=language_data,
-#                           out=pre_trained,
-#                           language=lang)
-# train_model(sources=sources,
-#             out=train_out_dir,
-#             init_lstm=train_dir/"rus.lstm",
-#             old_traineddata=train_dir/"testdata_best"/"rus.traineddata",
-#             traineddata=pre_trained/lang/"{}.traineddata".format(lang),
-#             unicharset_file=unicharset_file,
-#             train_files_list=train_files_list_file,
-#             eval_files_list=eval_files_list_file)
+clear_work_space(files=work_space_files)
+create_unicharset(sources=sources, box_files_dir=box_files_dir)
+create_lstmf_files(sources=sources)
+create_combine_lang_model(unicharset_file=unicharset_file,
+                          language_data=language_data,
+                          out=pre_trained,
+                          language=lang)
+train_model(sources=sources,
+            out=train_out_dir,
+            init_lstm=train_dir/"rus.lstm",
+            old_traineddata=train_dir/"testdata_best"/"rus.traineddata",
+            traineddata=pre_trained/lang/"{}.traineddata".format(lang),
+            unicharset_file=unicharset_file,
+            train_files_list=train_files_list_file,
+            eval_files_list=eval_files_list_file)
 
 build_trained_model(continue_from=train_out_dir,
                     trained_data=pre_trained/lang/"{}.traineddata".format(lang),
