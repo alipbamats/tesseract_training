@@ -1,6 +1,0 @@
-/home/user/box/10.lstmf
-/home/user/box/12.lstmf
-/home/user/box/13.lstmf
-/home/user/box/14.lstmf
-/home/user/box/15.lstmf
-/home/user/box/2.lstmf
