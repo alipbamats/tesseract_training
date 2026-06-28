@@ -120,6 +120,7 @@ def train_model(sources: Path,
         return
     if not os.path.isdir(out):
         os.mkdir(out)
+        
     shell_command = ['lstmtraining',
                      "--model_output", str(out)+"/",
                      "--continue_from", str(init_lstm),
