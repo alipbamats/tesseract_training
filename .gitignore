@@ -3,7 +3,7 @@
 .idea/
 sources/*/*.lstmf
 sources/*/*/*.lstmf
-train/out/*
+train/out/
 train/rus_original/*
 train/avar.eval_files.txt
 train/avar_trained/*/*
