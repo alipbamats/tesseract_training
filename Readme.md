@@ -1,3 +1,4 @@
+
 ## Извлечение файлов из оригинальной модели
 
 	combine_tessdata -u ~/tesseract_training/tessdata-main/tessdata-main/rus.traineddata ./rus_original/
