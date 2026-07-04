@@ -43,7 +43,7 @@ try:
     "{}.tif".format(result_file.as_posix()),
     tmp_folder/args.lang,
     "-l", args.lang,
-    "--tessdata-dir", "./"
+    "--tessdata-dir", args.traineddata
     ]
     process = subprocess.Popen(shell_command)
     process.wait()
@@ -76,4 +76,6 @@ except Exception as e:
     print("Error:", e)
     exit(-1)
 text=text.replace("\r","").replace("\n","")
+avar_chars_list=re.findall(r"(гI|гъ|гь|кI|къ|кь|хI|хъ|хь|тI|чI|лъ|цI|ГI|Гъ|Гь|КI|Къ|Кь|ХI|Хъ|Хь|ТI|ЧI|Лъ|ЦI)", text)
 print("Percentage of errors: {}%".format(len(diff_list)/len(text)*100))
+print("Percentage of errors (avar): {}%".format(len(diff_list)/len(avar_chars_list)*100))
