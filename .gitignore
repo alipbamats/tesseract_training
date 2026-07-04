@@ -11,3 +11,4 @@ train/avar_trained/*
 train/avar.train_files.txt
 train/box/
 train/avar.unicharset
+~tmp/
