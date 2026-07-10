@@ -16,6 +16,7 @@ for root, dirs, files in os.walk(args.dir):
         if not file.endswith(".box"):
             continue
         file_path=Path(root)/file
+        print("File:",file_path)
         print(file_path)
         with open(file_path,'rb') as file:
             box_text=file.read()
@@ -27,5 +28,6 @@ for root, dirs, files in os.walk(args.dir):
                     box_items = [match.group(i) for i in range(1,7)]
                     if box_items[0].hex() == "d380":
                         box_items[0]=b"\x49"
+                        print("-->EDIT")
                     new_box_line=b" ".join(box_items)+b"\r\n"
                     out_file.write(new_box_line)
