@@ -102,7 +102,7 @@ def train_model(sources: Path,
                 unicharset_file: Path,
                 train_files_list: Path,
                 eval_files_list: Path,
-                max_iterations: int = 500):
+                max_iterations: int = 2500):
 
     lstmf_files=get_files_by_extension(sources, "lstmf")
     try:
@@ -129,7 +129,8 @@ def train_model(sources: Path,
                      "--train_listfile", str(train_files_list),
                      "--eval_listfile", str(eval_files_list),
                      "--U", str(unicharset_file),
-                     "--max_iterations", str(max_iterations)]
+                     "--max_iterations", str(max_iterations),
+                     "--learning_rate", "0.0001"]
     print(" ".join(shell_command))
     process = subprocess.Popen(" ".join(shell_command), shell=True)
     process.wait()
