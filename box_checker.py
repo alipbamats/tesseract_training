@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(
 # 2. Add arguments
 # Required positional argument
 parser.add_argument("--dir", type=str, help="")
+parser.add_argument("--verbose","-v", action='store_true', help="Verbose")
 args = parser.parse_args()
 for root, dirs, files in os.walk(args.dir):
     for file in files:
@@ -17,7 +18,6 @@ for root, dirs, files in os.walk(args.dir):
             continue
         file_path=Path(root)/file
         print("File:",file_path)
-        print(file_path)
         with open(file_path,'rb') as file:
             box_text=file.read()
         with open(file_path,'wb') as out_file:
@@ -25,10 +25,15 @@ for root, dirs, files in os.walk(args.dir):
             for box_line in box_text.split(b'\n'):
                 match=re.search(rb"(.*)\s(.*)\s(.*)\s(.*)\s(.*)\s(.*)",box_line)
                 if match:
-                    print("-->","\"{}\"-\"{}\"".format(match.group(1).hex(),match.group(1).decode("utf-8")))
                     box_items = [match.group(i) for i in range(1,7)]
-                    if box_items[0].hex() == "d380":
-                        box_items[0]=b"\x49"
-                        print("-->#EDIT")
+                    if box_items[0].hex() =="49":
+                        box_items[0]=b"\xd3\x80"
+                        if args.verbose:
+                            print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
+                        else:
+                            print("-->#EDIT")
+                    else:
+                        if args.verbose:
+                            print("-->","sym: \"{}\", code: \"{}\"".format(match.group(1).decode("utf-8"), match.group(1).hex()))
                     new_box_line=b" ".join(box_items)+b"\n"
                     out_file.write(new_box_line)
