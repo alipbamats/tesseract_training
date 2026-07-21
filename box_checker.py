@@ -35,5 +35,16 @@ for root, dirs, files in os.walk(args.dir):
                     else:
                         if args.verbose:
                             print("-->","sym: \"{}\", code: \"{}\"".format(match.group(1).decode("utf-8"), match.group(1).hex()))
+
+                    if box_items[0].hex() =="27":
+                        box_items[0]=b"\xcc\x81"
+                        if args.verbose:
+                            print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
+                        else:
+                            print("-->#EDIT")
+                    else:
+                        if args.verbose:
+                            print("-->","sym: \"{}\", code: \"{}\"".format(match.group(1).decode("utf-8"), match.group(1).hex()))
+
                     new_box_line=b" ".join(box_items)+b"\n"
                     out_file.write(new_box_line)
