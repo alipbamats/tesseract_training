@@ -32,12 +32,14 @@ for root, dirs, files in os.walk(args.dir):
                             print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
                         else:
                             print("-->#EDIT")
-                    else:
-                        if args.verbose:
-                            print("-->","sym: \"{}\", code: \"{}\"".format(match.group(1).decode("utf-8"), match.group(1).hex()))
-
-                    if box_items[0].hex() =="27":
+                    elif box_items[0].hex() =="27":
                         box_items[0]=b"\xcc\x81"
+                        if args.verbose:
+                            print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
+                        else:
+                            print("-->#EDIT")
+                    elif box_items[0].hex() =="3d":
+                        box_items[0]=b"\xcc\x84"
                         if args.verbose:
                             print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
                         else:
