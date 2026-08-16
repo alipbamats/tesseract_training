@@ -32,7 +32,7 @@ for root, dirs, files in os.walk(args.dir):
                             print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
                         else:
                             print("-->#EDIT")
-                    elif box_items[0].hex() =="27":
+                    elif box_items[0].hex() =="27" or box_items[0].hex() =="c2b4":
                         box_items[0]=b"\xcc\x81"  #комбинируемый знак ударения (Combining Acute Accent), который в стандарте Unicode имеет код U+0301 (́).
                         if args.verbose:
                             print("-->", "sym: \"{}\", code: \"{}\", ##EDIT".format(match.group(1).decode("utf-8"), match.group(1).hex()))
